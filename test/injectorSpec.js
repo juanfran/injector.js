@@ -10,4 +10,18 @@ describe('Injector anonate', function() {
         di = Injector.annotate(function(){});
         expect(di.length).toEqual(0);
     });
+
+    it('cache dependencies', function() {
+        var fn = function(test1, test2){};
+
+        Injector.annotate(fn);
+
+        expect(fn._inject[0]).toBe('test1');
+        expect(fn._inject[1]).toBe('test2');
+
+        Injector.annotate(fn);
+
+        expect(fn._inject[0]).toBe('test1');
+        expect(fn._inject[1]).toBe('test2');
+    });
 });

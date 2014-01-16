@@ -9,15 +9,21 @@
     var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 
     Injector.annotate = function(fn) {
-        var fnText = fn.toString().replace(STRIP_COMMENTS, '');
-        var argDecl = fnText.match(FN_ARGS);
-        var inject = [];
-        var args = argDecl[1].split(FN_ARG_SPLIT);
+        var inject = fn._inject;
 
-        for (var i = 0, length = args.length; i < length; i += 1) {
-            args[i].replace(FN_ARG, function(all, underscore, name){
-                inject.push(name);
-            });
+        if (!fn._inject) {
+            var fnText = fn.toString().replace(STRIP_COMMENTS, '');
+            var argDecl = fnText.match(FN_ARGS);
+            var inject = [];
+            var args = argDecl[1].split(FN_ARG_SPLIT);
+
+            for (var i = 0, length = args.length; i < length; i += 1) {
+                args[i].replace(FN_ARG, function(all, underscore, name){
+                    inject.push(name);
+                });
+            }
+
+            fn._inject = inject;
         }
 
         return inject;
