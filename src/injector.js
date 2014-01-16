@@ -38,11 +38,11 @@
         return Injector.dependencies[fnName];
     };
 
-    var _invoke = function(name) {
+    var _invoke = function(name, self) {
         var fn = Injector.get(name);
 
         return function() {
-            return Injector.invoke(fn);
+            return Injector.invoke(fn, self);
         };
     };
 

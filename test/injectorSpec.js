@@ -76,4 +76,25 @@ describe('Injector invoke', function() {
 
         expect(testFunc3).toHaveBeenCalled();
     });
+
+    it('custumize context', function() {
+        var context = {};
+
+        var testFunc1 = function(test2) {
+            expect(this).toEqual(context);
+            test2();
+        };
+        var testFunc2 = function(test3) {
+            expect(this).toEqual(context);
+            test3();
+        };
+
+        Injector.add('test1', testFunc1);
+        Injector.add('test2', testFunc2);
+
+        Injector.invoke(function(test1) {
+            expect(this).toEqual(context);
+            test1();
+        }, context);
+    });
 });
