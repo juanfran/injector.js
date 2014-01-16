@@ -25,3 +25,17 @@ describe('Injector anonate', function() {
         expect(fn._inject[1]).toBe('test2');
     });
 });
+
+describe('Injector add/get', function() {
+    it('add', function() {
+        var testFunc = function() {};
+        var testFunc1 = function() {};
+
+        Injector.add('test1', testFunc);
+        Injector.add('test2', testFunc1);
+
+        expect(Injector.get('test1')).toEqual(testFunc);
+        expect(Injector.get('test2')).not.toEqual(testFunc);
+        expect(Injector.get('test2')).toEqual(testFunc1);
+    });
+});

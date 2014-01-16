@@ -8,6 +8,8 @@
     var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
     var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 
+    Injector.dependencies = {};
+
     Injector.annotate = function(fn) {
         var inject = fn._inject;
 
@@ -27,6 +29,14 @@
         }
 
         return inject;
+    };
+
+    Injector.add = function(fnName, fn) {
+        Injector.dependencies[fnName] = fn;
+    };
+
+    Injector.get = function(fnName) {
+        return Injector.dependencies[fnName];
     };
 
     return Injector;
