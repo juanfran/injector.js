@@ -10,6 +10,7 @@
 
     Injector.dependencies = {};
 
+    //code based on angularJs $inject
     Injector.annotate = function(fn) {
         if (!fn._inject) {
             var inject = [];
