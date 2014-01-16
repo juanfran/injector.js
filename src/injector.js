@@ -11,9 +11,8 @@
     Injector.dependencies = {};
 
     Injector.annotate = function(fn) {
-        var inject = fn._inject;
-
         if (!fn._inject) {
+            var inject = [];
             var fnText = fn.toString().replace(STRIP_COMMENTS, '');
             var argDecl = fnText.match(FN_ARGS);
             var inject = [];
@@ -28,7 +27,7 @@
             fn._inject = inject;
         }
 
-        return inject;
+        return fn._inject;
     };
 
     Injector.add = function(fnName, fn) {
@@ -37,6 +36,28 @@
 
     Injector.get = function(fnName) {
         return Injector.dependencies[fnName];
+    };
+
+    var _invoke = function(name) {
+        var fn = Injector.get(name);
+
+        return function() {
+            return Injector.invoke(fn);
+        };
+    };
+
+    Injector.invoke = function(fn, self) {
+        var args = [],
+        inject = Injector.annotate(fn),
+        fnDependency;
+
+        for(var i = 0, length = inject.length; i < length; i += 1) {
+            fnDependency = _invoke(inject[i], self);
+
+            args.push(fnDependency);
+        }
+
+        return fn.apply(self, args);
     };
 
     return Injector;
