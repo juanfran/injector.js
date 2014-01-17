@@ -1,7 +1,7 @@
 {
     "node": true,
+    "loopfunc": true,
     "browser": true,
-    "es5": true,
     "esnext": true,
     "bitwise": true,
     "camelcase": true,
@@ -18,5 +18,8 @@
     "unused": true,
     "strict": true,
     "trailing": true,
-    "smarttabs": true
+    "smarttabs": true,
+    "globals": {
+        "Injector": false
+    }
 }

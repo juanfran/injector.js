@@ -1,7 +1,10 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         jshint: {
-            all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
+            options: {
+                jshintrc: '.jshintrc',
+            },
+            all: ['src/**/*.js']
         },
         karma: {
             unit: {
@@ -21,6 +24,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('default', ['jshint', 'karma']);
-    grunt.registerTask('build', ['jshint', 'uglify']);
+    grunt.registerTask('default', ['jshint:all', 'karma']);
+    grunt.registerTask('build', ['jshint:all', 'uglify']);
 };
