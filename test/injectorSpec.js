@@ -95,6 +95,18 @@ describe('Injector invoke', function() {
         Injector.invoke(function(test1) {
             expect(this).toEqual(context);
             test1();
-        }, context);
+        }, {}, context);
+    });
+
+    it('overwrite dependency', function() {
+        var overwriteSpy = jasmine.createSpy();
+
+        Injector.invoke(function(overwrite) {
+            overwriteSpy();
+        }, {
+            'overwrite': overwriteSpy
+        });
+
+       expect(overwriteSpy).toHaveBeenCalled();
     });
 });

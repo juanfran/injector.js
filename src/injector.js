@@ -38,21 +38,32 @@
         return Injector.dependencies[fnName];
     };
 
-    var _invoke = function(name, self) {
+    var _invoke = function(name, overwrites, self) {
         var fn = Injector.get(name);
 
         return function() {
-            return Injector.invoke(fn, self);
+            return Injector.invoke(fn, overwrites, self);
         };
     };
 
-    Injector.invoke = function(fn, self) {
+    Injector.invoke = function(fn, overwrites, self) {
         var args = [],
         inject = Injector.annotate(fn),
+        overwrite,
         fnDependency;
 
+        if(!overwrites) {
+            overwrites = {};
+        }
+
         for(var i = 0, length = inject.length; i < length; i += 1) {
-            fnDependency = _invoke(inject[i], self);
+            overwrite = overwrites[inject[i]];
+
+            if(overwrite) {
+                fnDependency = Injector.invoke(overwrite, self);
+            } else {
+                fnDependency = _invoke(inject[i], overwrites, self);
+            }
 
             args.push(fnDependency);
         }
