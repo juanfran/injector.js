@@ -16,7 +16,6 @@
             var inject = [];
             var fnText = fn.toString().replace(STRIP_COMMENTS, '');
             var argDecl = fnText.match(FN_ARGS);
-            var inject = [];
             var args = argDecl[1].split(FN_ARG_SPLIT);
 
             for (var i = 0, length = args.length; i < length; i += 1) {
