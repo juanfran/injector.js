@@ -1,0 +1,11 @@
+{
+    "name": "injector.js",
+    "version": "0.1.0",
+    "ignore": [
+        "**/.*",
+        "Gruntfile.js",
+        "package.json",
+        "bower.json",
+        "test"
+    ]
+}
