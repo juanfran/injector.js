@@ -41,9 +41,7 @@
     var _invoke = function(name, overwrites, self) {
         var fn = Injector.get(name);
 
-        return function() {
-            return Injector.invoke(fn, overwrites, self);
-        };
+        return Injector.invoke(fn, overwrites, self);
     };
 
     Injector.invoke = function(fn, overwrites, self) {

@@ -48,22 +48,38 @@ describe('Injector invoke', function() {
         Injector.add('test1', testFunc);
         Injector.add('test2', testFunc1);
 
-        Injector.invoke(function(test1, test2) {
-            test1();
-            test2();
-        });
+        Injector.invoke(function(test1, test2) {});
 
         expect(testFunc).toHaveBeenCalled();
         expect(testFunc1).toHaveBeenCalled();
     });
 
     it('3 levels depth invoke', function() {
+        var testFunc1 = function(test2) {};
+        var testFunc2 = function(test3) {};
+        var testFunc3 = jasmine.createSpy();
+
+        Injector.add('test1', testFunc1);
+        Injector.add('test2', testFunc2);
+        Injector.add('test3', testFunc3);
+
+        Injector.invoke(function(test1) {});
+
+        expect(testFunc3).toHaveBeenCalled();
+    });
+
+    it('custumize context', function() {
+        var context = {};
+        var end = false;
+
         var testFunc1 = function(test2) {
-            test2();
+            expect(this).toEqual(context);
         };
         var testFunc2 = function(test3) {
-            test3();
+            expect(this).toEqual(context);
+            end = true;
         };
+
         var testFunc3 = jasmine.createSpy();
 
         Injector.add('test1', testFunc1);
@@ -71,31 +87,10 @@ describe('Injector invoke', function() {
         Injector.add('test3', testFunc3);
 
         Injector.invoke(function(test1) {
-            test1();
-        });
-
-        expect(testFunc3).toHaveBeenCalled();
-    });
-
-    it('custumize context', function() {
-        var context = {};
-
-        var testFunc1 = function(test2) {
             expect(this).toEqual(context);
-            test2();
-        };
-        var testFunc2 = function(test3) {
-            expect(this).toEqual(context);
-            test3();
-        };
-
-        Injector.add('test1', testFunc1);
-        Injector.add('test2', testFunc2);
-
-        Injector.invoke(function(test1) {
-            expect(this).toEqual(context);
-            test1();
         }, {}, context);
+
+        expect(end).toBe(true);
     });
 
     it('overwrite dependency', function() {
